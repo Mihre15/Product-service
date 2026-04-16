@@ -1,5 +1,7 @@
 # Product-service
+
 ![CI Status](https://github.com/Mihre15/Product-service/actions/workflows/ci.yml/badge.svg)
+https://github.com/Mihre15/Product-service/actions/workflows/ci.yml/badge.svg
 A RESTful product microservice built with Spring Boot 3.
 ## Getting Started
 ```bash
