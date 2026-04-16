@@ -1,7 +1,9 @@
-package ctbe.lydia_mihretab.product_service.service;
+package ctbe.lydia_mihretab.product_service;
+import ctbe.lydia_mihretab.product_service.dto.ProductResponse;
 import ctbe.lydia_mihretab.product_service.model.Product;
 import ctbe.lydia_mihretab.product_service.repository.ProductRepository;
 
+import ctbe.lydia_mihretab.product_service.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,20 +21,21 @@ public class ProductServiceTest {
     @Test
     void findById_returnsProduct_whenProductExists() {
 // Arrange — define what the mock should return
-        Product laptop = new Product("Laptop", 1200.0);
+        Product laptop = new Product("Laptop", 1200.0, 10, "Electronics");
         laptop.setId(1L);
         when(productRepository.findById(1L)).thenReturn(Optional.of(laptop));
 // Act — call the method under test
-        Optional<Product> result = productService.findById(1L);
+        ProductResponse result = productService.findById(1L);
 // Assert — verify the result
-        assertThat(result).isPresent();
-        assertThat(result.get().getName()).isEqualTo("Laptop");
-        assertThat(result.get().getPrice()).isEqualTo(1200.0);
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getName()).isEqualTo("Laptop");
+        assertThat(result.getPrice()).isEqualTo(1200.0);
     }
     @Test
-    void findById_returnsEmpty_whenProductNotFound() {
+    void findById_returnsException_orNull_whenProductNotFound() {
         when(productRepository.findById(99L)).thenReturn(Optional.empty());
-        Optional<Product> result = productService.findById(99L);
-        assertThat(result).isEmpty();
-    }
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> productService.findById(99L))
+                .isInstanceOf(ctbe.lydia_mihretab.product_service.exception.ResourceNotFoundException.class);
+}
 }

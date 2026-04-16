@@ -7,4 +7,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     // Spring Data automatically generates the SQL for this method:
     List<Product> findByNameContainingIgnoreCase(String keyword);
+    List<Product> findByCategory(String category);
 }
